@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>README.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1>Classes</h1>
+
+<ul>
+<li>La Classe <code>Map</code> est un simple tableau 2D d'entier, elle permet juste de plus rapidement afficher, ou modifier certains éléments</li>
+<li>La Classe <code>f_stack</code> et <code>p_stack</code> sont respectivement une pile et une file de priorité, cependant elles possèdent
+toutes les deux une fonction <code>find</code> pour rechercher, et rechercher/supprimer si existe mieux</li>
+<li><code>Content</code> est une structure qui regroupe toutes les données nécessaires pour faire fonctionner l'algorithme A, mais
+aussi retracer le chemin.</li>
+</ul>
+
+<h1>Comment exécuter</h1>
+
+<p>Créer une carte (cf <em>test.txt</em>, 0 = case vide, 1 = case mur)
+ET OUI NOIR = LIBRE ET BLANC = MUR</p>
+
+<p>Modifier dans AAAH.cpp, le main:</p>
+
+<ul>
+<li>nom du fichier</li>
+<li>coordonnée start et end</li>
+</ul>
+
+<p>ATTENTION, ne pas oublier qu'il y a des murs pour rendre la carte plus lisible, bien les prendre en compte (décalage de 1 horizontalement et verticalement ) </p>
+
+<p><em>Si j'ai pas la flemme, on pourra les passer en arguments de la commande</em></p>
+
+<p>Il existe aussi tout en haut du fichier un define DEBUG.</p>
+
+<p>1 pour avoir la trace de l'algo, 0 pour avoir seulement le résultat.</p>
+
+<p>Puis:
+g++ -Wall -Wextra  -o exec Map.cpp AAAH.cpp</p>
+
+<p>./exec</p>
+
+<p>La magie opère !!!</p>
+
+</body>
+</html>
