@@ -2,6 +2,7 @@
 #define MAP_HPP
 
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 // Definition of ascii color

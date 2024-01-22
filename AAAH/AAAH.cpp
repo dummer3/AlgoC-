@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-#define DEBUG 0
+#define DEBUG 1
 
 // Class to save pathfinding information
 class Content {
@@ -184,9 +184,22 @@ int A(Map &map, std::pair<int, int> start, std::pair<int, int> end) {
   return 1;
 }
 
-int main() {
-  Map map("test.txt");
-  A(map, std::pair<int, int>(12, 12), std::pair<int, int>(5, 6));
+int main(int argc, char **argv) {
+  std::string fileName = "test.txt";
+  std::pair<int, int> start, end;
+
+  if (argc > 1)
+    fileName = argv[1];
+
+  Map map(fileName);
+  map.printMap();
+
+  std::cout << "select start coordinate (y x)" << std::endl;
+  std::cin >> start.first >> start.second;
+  std::cout << "select end coordinate (y x)" << std::endl;
+  std::cin >> end.first >> end.second;
+
+  A(map, start, end);
   map.printMap();
   return 0;
 }

@@ -38,9 +38,16 @@ Map::Map(std::string file) {
 
 void Map::printMap() const {
 
+  std::cout << "   ";
+  for (int i = 0; i < width; i++)
+    std::cout << std::setw(3) << i;
+  std::cout << std::endl;
+
   // For every tile
   for (int y = 0; y < height; y++) {
+    std::cout << std::setw(3) << y << " ";
     for (int x = 0; x < width; x++) {
+
       // Choose the correct background colorBack
       std::string colorBack;
       int tile = tiles[y][x];

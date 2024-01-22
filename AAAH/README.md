@@ -12,23 +12,13 @@
 Créer une carte (cf *test.txt*, 0 = case vide, 1 = case mur)
 ET OUI NOIR = LIBRE ET BLANC = MUR
 
-Modifier dans AAAH.cpp, le main:
-
-- nom du fichier
-- coordonnée start et end
-  
-ATTENTION, ne pas oublier qu'il y a des murs pour rendre la carte plus lisible, bien les prendre en compte (décalage de 1 horizontalement et verticalement ) 
-
-*Si j'ai pas la flemme, on pourra les passer en arguments de la commande*
-
-Il existe aussi tout en haut du fichier un define DEBUG.
-
+Il existe aussi tout en haut du fichier AAAH.cpp un define DEBUG.
 1 pour avoir la trace de l'algo, 0 pour avoir seulement le résultat.
 
 Puis:
 g++ -Wall -Wextra  -o exec Map.cpp AAAH.cpp
 
-./exec
+./exec [nom du fichier, par défaut test.txt]
 
 La magie opère !!!
 
