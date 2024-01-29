@@ -108,7 +108,9 @@ int A(Map &map, std::pair<int, int> start, std::pair<int, int> end) {
     std::pair<int, int> parent_pos = parent.position;
 
     // Look if the tiles is inside the map or empty
-    if (map.getTile(ngh_pos) != 1) {
+    if (ngh_pos.second < map.getWidth() - 1 && ngh_pos.second > 0 &&
+        ngh_pos.first < map.getHeight() - 1 && ngh_pos.first > 0 &&
+        map.getTile(ngh_pos) != 1) {
 
       // Create the content associate to this tiles
       Content neighbor(ngh_pos, parent.weight + 1,
