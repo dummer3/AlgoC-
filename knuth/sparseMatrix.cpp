@@ -34,7 +34,7 @@ SparseMatrix::SparseMatrix(std::string fileName) {
         head_const_iterator it = cols.cbegin();
         std::advance(it, element);
         Head *col = *it;
-        Cell *temp = new Cell(row, col);
+        Cell temp = Cell(row, col);
         row->cells.push_back(temp);
         col->cells.push_back(temp);
         col->count++;
@@ -58,15 +58,15 @@ SparseMatrix::SparseMatrix(const SparseMatrix *from) {
     Head *row = new Head(rowFrom->represent);
     rows.push_back(row);
 
-    for (Cell *cell : rowFrom->cells) {
+    for (Cell cell : rowFrom->cells) {
       head_const_iterator col_it =
-          std::find(from->cols.cbegin(), from->cols.cend(), cell->colHead);
+          std::find(from->cols.cbegin(), from->cols.cend(), cell.colHead);
       int col_index = std::distance(from->cols.cbegin(), col_it);
 
       head_const_iterator it = cols.cbegin();
       std::advance(it, col_index);
       Head *col = *it;
-      Cell *temp = new Cell(row, col);
+      Cell temp = Cell(row, col);
       row->cells.push_back(temp);
       col->cells.push_back(temp);
       col->count++;
@@ -78,22 +78,12 @@ SparseMatrix::SparseMatrix(const SparseMatrix *from) {
 }
 
 SparseMatrix::~SparseMatrix() {
-  Head* head;
-  while (head = rows.front()) {
-    std::cout << "clean " << head->represent << std::endl;
-    delete head;
-    head = nullptr;
-    rows.pop_front();
-  }
-
-  while (head = cols.front())
-  {
-    std::cout << "clean " << head->represent << " count " << head->count << std::endl;
-    // Should call this to free the col, but cause double free
-    //free(head);
-    head = nullptr;
-    cols.pop_front();
-  }
+  for (Head *row : rows)
+    delete row;
+  rows.clear();
+  for (Head *col : cols)
+    delete col;
+  cols.clear();
 }
 
 void SparseMatrix::print() const {
@@ -106,9 +96,9 @@ void SparseMatrix::print() const {
   for (Head *row : rows) {
     std::cout << " " << row->represent << "  ";
     head_const_iterator col = cols.cbegin();
-    for (Cell *cell : row->cells) {
+    for (Cell cell : row->cells) {
 
-      while (*col != cell->colHead) {
+      while (*col != cell.colHead) {
         std::cout << "     ";
         col++;
       }
@@ -148,9 +138,9 @@ void SparseMatrix::selectCol() {
   if ((*col)->count == 0) {
     std::cout << "Can't work" << std::endl;
   } else {
-    for (Cell *cell : (*col)->cells) {
+    for (Cell cell : (*col)->cells) {
       head_const_iterator row_it =
-          std::find(rows.cbegin(), rows.cend(), cell->rowHead);
+          std::find(rows.cbegin(), rows.cend(), cell.rowHead);
       int row_index = std::distance(rows.cbegin(), row_it);
       SparseMatrix newMat = SparseMatrix(this);
       head_const_iterator it = newMat.rows.cbegin();
@@ -177,8 +167,8 @@ void SparseMatrix::removeRow(Head *row) {
   print();
 
   std::string result = row->represent;
-  for (Cell *cell : row->cells) {
-    Head *col = cell->colHead;
+  for (Cell cell : row->cells) {
+    Head *col = cell.colHead;
     result += " " + col->represent;
     removeCol(col, row);
     print();
@@ -192,7 +182,6 @@ void SparseMatrix::removeRow(Head *row) {
   // delete the row of origin here
   std::cout << "delete " << row->represent << std::endl;
   delete row;
-  row = nullptr;
   solution.push_back(result);
   resolve();
 }
@@ -203,30 +192,28 @@ void SparseMatrix::removeCol(Head *col, Head *rowOfOrigin) {
             << "=======================" << std::endl
             << std::endl;
 
-  Cell *cellCol;
+  // for(Cell* cellCol: col->cells)
+  //{
   while (col->cells.size() != 0) {
-    cellCol = col->cells.front();
-    Head *row = cellCol->rowHead;
-    std::cout << cellCol->rowHead->represent << ":"
-              << cellCol->colHead->represent << std::endl;
-    for (Cell *cell : row->cells) {
-      cell->colHead->count--;
-      //delete in col (even the row of origin)
-      cell->colHead->cells.remove(cell);
+    Cell cellCol = col->cells.front();
+    Head *row = cellCol.rowHead;
+    std::cout << cellCol.rowHead->represent << ":" << cellCol.colHead->represent
+              << std::endl;
+    for (Cell cell : row->cells) {
+      cell.colHead->count--;
+      // delete in col (even the row of origin)
+      cell.colHead->cells.remove(cell);
     }
 
     rows.remove(row);
-    //delete all row (except if we still need it to continue the algo)
-    if (row != rowOfOrigin)
-    {
-      std::cout << "delete :" << row->represent << std::endl; 
+    // delete all row (except if we still need it to continue the algo)
+    if (row != rowOfOrigin) {
+      std::cout << "delete :" << row->represent << std::endl;
       delete row;
-      row = nullptr;
     }
-
   }
 
   cols.remove(col);
   // same as destructor
-  // free(col);
+  delete(col);
 }
